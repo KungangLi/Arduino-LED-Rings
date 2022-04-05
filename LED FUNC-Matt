@@ -1,0 +1,38 @@
+
+void rainbow(byte stripNum)
+{
+  static const byte wait = 10;
+
+  if (currentMillis[stripNum] - pixelPrevious[stripNum] >= wait)
+  {
+    pixelPrevious[stripNum] = currentMillis[stripNum];
+
+    for (uint16_t i = 0; i < ledCount; i++)
+      strip[stripNum].setPixelColor(i, Wheel((i + pixelCycle[stripNum]) & 255));
+
+    strip[stripNum].show();
+    pixelCycle[stripNum]++;
+
+    if (pixelCycle[stripNum] >= 256)
+    {
+      pixelCycle[stripNum] = 0;
+      shouldRainbow[stripNum] = false;
+    }
+  }
+
+}
+
+// Input a value 0 to 255 to get a color value.
+// The colours are a transition r - g - b - back to r.
+uint32_t Wheel(byte WheelPos) {
+  WheelPos = 255 - WheelPos;
+  if (WheelPos < 85) {
+    return Adafruit_NeoPixel::Color(255 - WheelPos * 3, 0, WheelPos * 3);
+  }
+  if (WheelPos < 170) {
+    WheelPos -= 85;
+    return Adafruit_NeoPixel::Color(0, WheelPos * 3, 255 - WheelPos * 3);
+  }
+  WheelPos -= 170;
+  return Adafruit_NeoPixel::Color(WheelPos * 3, 255 - WheelPos * 3, 0);
+}
