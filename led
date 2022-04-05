@@ -1,0 +1,158 @@
+#include <Adafruit_NeoPixel.h>
+#ifdef __AVR__
+#include <avr/power.h> // Required for 16 MHz Adafruit Trinket
+#endif
+
+#define LED1_PIN    8
+#define LED2_PIN    9
+#define LED3_PIN    10
+#define LED4_PIN    11
+
+// How many NeoPixels are attached to the Arduino?
+#define LED1_COUNT 60
+#define LED2_COUNT 60
+#define LED3_COUNT 60
+#define LED4_COUNT 60
+
+// Declare our NeoPixel strip object:
+Adafruit_NeoPixel strip1(LED1_COUNT, LED1_PIN, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel strip2(LED2_COUNT, LED2_PIN, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel strip3(LED3_COUNT, LED3_PIN, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel strip4(LED4_COUNT, LED4_PIN, NEO_GRB + NEO_KHZ800);
+
+const int button1 = 3;
+const int button2 = 4;
+const int button3 = 5;
+const int button4 = 6;
+const int ResetButton5 = 7;
+
+int oldButton1State = HIGH;
+int oldButton2State = HIGH;
+int oldButton3State = HIGH;
+int oldButton4State = HIGH;
+
+int button1State = HIGH;
+int button2State = HIGH;
+int button3State = HIGH;
+int button4State = HIGH;
+
+boolean led1State = false;
+boolean led2State = false;
+boolean led3State = false;
+boolean led4State = false;
+
+void setup() {
+
+  pinMode(button1,INPUT_PULLUP) ;
+  pinMode(button2,INPUT_PULLUP) ;
+  pinMode(button3,INPUT_PULLUP) ;
+  pinMode(button4,INPUT_PULLUP) ;
+  pinMode(ResetButton5,INPUT_PULLUP) ;
+  pinMode(LED1_PIN, OUTPUT);
+  pinMode(LED2_PIN, OUTPUT);
+  pinMode(LED3_PIN, OUTPUT);
+  pinMode(LED4_PIN, OUTPUT);
+  Serial.begin(9600);
+  #if defined(__AVR_ATtiny85__) && (F_CPU == 16000000)
+  clock_prescale_set(clock_div_1);
+#endif
+  // END of Trinket-specific code.
+
+  strip1.begin();           // INITIALIZE NeoPixel strip object (REQUIRED)
+  strip1.show();            // Turn OFF all pixels ASAP
+  strip1.setBrightness(50); // Set BRIGHTNESS to about 1/5 (max = 255)
+  
+  strip2.begin();           // INITIALIZE NeoPixel strip object (REQUIRED)
+  strip2.show();            // Turn OFF all pixels ASAP
+  strip2.setBrightness(50); // Set BRIGHTNESS to about 1/5 (max = 255)
+  
+  strip3.begin();           // INITIALIZE NeoPixel strip object (REQUIRED)
+  strip3.show();            // Turn OFF all pixels ASAP
+  strip3.setBrightness(50); // Set BRIGHTNESS to about 1/5 (max = 255)
+  
+  strip4.begin();           // INITIALIZE NeoPixel strip object (REQUIRED)
+  strip4.show();            // Turn OFF all pixels ASAP
+  strip4.setBrightness(50); // Set BRIGHTNESS to about 1/5 (max = 255)
+}
+
+void loop() {
+
+  button1State = digitalRead(button1);
+  if(button1State == LOW && oldButton1State == HIGH) {
+    if(led1State == true) {
+      digitalWrite(LED1_PIN, LOW);
+    } else {
+      digitalWrite(LED1_PIN, HIGH);
+      Serial.println("1");
+      rainbow(10);  // Flowing rainbow cycle along the whole strip
+
+    }
+    led1State = !led1State;
+  }
+
+   button2State = digitalRead(button2);
+  if(button2State == LOW && oldButton2State == HIGH) {
+    if(led2State == true) {
+      digitalWrite(LED2_PIN, LOW);
+    } else {
+      digitalWrite(LED2_PIN, HIGH);
+      Serial.println("2");
+      rainbow(10);  // Flowing rainbow cycle along the whole strip
+
+    }
+    led2State = !led2State;
+  }
+
+     button3State = digitalRead(button3);
+  if(button3State == LOW && oldButton3State == HIGH) {
+    if(led3State == true) {
+      digitalWrite(LED3_PIN, LOW);
+    } else {
+      digitalWrite(LED3_PIN, HIGH);
+      Serial.println("3");
+      rainbow(10);  // Flowing rainbow cycle along the whole strip
+
+    }
+    led3State = !led3State;
+  }
+
+     button4State = digitalRead(button4);
+  if(button4State == LOW && oldButton4State == HIGH) {
+    if(led4State == true) {
+      digitalWrite(LED4_PIN, LOW);
+    } else {
+      digitalWrite(LED4_PIN, HIGH);
+      Serial.println("4");
+      rainbow(10);  // Flowing rainbow cycle along the whole strip
+
+    }
+    led4State = !led4State;
+  }
+}
+
+// Rainbow cycle along whole strip. Pass delay time (in ms) between frames.
+void rainbow(int wait) {
+  for(long firstPixelHue = 0; firstPixelHue < 5*65536; firstPixelHue += 256) {
+    strip1.rainbow(firstPixelHue);
+    strip1.show(); // Update strip with new contents
+    delay(wait);  // Pause for a moment
+  }
+
+  for(long firstPixelHue = 0; firstPixelHue < 5*65536; firstPixelHue += 256) {
+    strip2.rainbow(firstPixelHue);
+    strip2.show(); // Update strip with new contents
+    delay(wait);  // Pause for a moment
+  }
+  
+  for(long firstPixelHue = 0; firstPixelHue < 5*65536; firstPixelHue += 256) {
+    strip3.rainbow(firstPixelHue);
+    strip3.show(); // Update strip with new contents
+    delay(wait);  // Pause for a moment
+  }
+  
+  for(long firstPixelHue = 0; firstPixelHue < 5*65536; firstPixelHue += 256) {
+    strip4.rainbow(firstPixelHue);
+    strip4.show(); // Update strip with new contents
+    delay(wait);  // Pause for a moment
+  }
+}
