@@ -24,6 +24,7 @@ int button1State = 0;
 int button2State = 0;
 int button3State = 0;
 int button4State = 0;
+int button5State = 0;
 
 Adafruit_NeoPixel strip1(LED1_COUNT, LED1_PIN, NEO_GRB + NEO_KHZ800);
 Adafruit_NeoPixel strip2(LED2_COUNT, LED2_PIN, NEO_GRB + NEO_KHZ800);
@@ -41,19 +42,19 @@ void setup() {
 
   strip1.begin();           // INITIALIZE NeoPixel strip object (REQUIRED)
   strip1.show();            // Turn OFF all pixels ASAP
-  strip1.setBrightness(50); // Set BRIGHTNESS to about 1/5 (max = 255)
+  strip1.setBrightness(100); // Set BRIGHTNESS to about 1/5 (max = 255)
 
   strip2.begin();           // INITIALIZE NeoPixel strip object (REQUIRED)
   strip2.show();            // Turn OFF all pixels ASAP
-  strip2.setBrightness(50); // Set BRIGHTNESS to about 1/5 (max = 255)
+  strip2.setBrightness(100); // Set BRIGHTNESS to about 1/5 (max = 255)
 
   strip3.begin();           // INITIALIZE NeoPixel strip object (REQUIRED)
   strip3.show();            // Turn OFF all pixels ASAP
-  strip3.setBrightness(50); // Set BRIGHTNESS to about 1/5 (max = 255)
+  strip3.setBrightness(100); // Set BRIGHTNESS to about 1/5 (max = 255)
 
   strip4.begin();           // INITIALIZE NeoPixel strip object (REQUIRED)
   strip4.show();            // Turn OFF all pixels ASAP
-  strip4.setBrightness(50); // Set BRIGHTNESS to about 1/5 (max = 255)
+  strip4.setBrightness(100); // Set BRIGHTNESS to about 1/5 (max = 255)
 
   pinMode(button1,INPUT_PULLUP) ;
   pinMode(button2,INPUT_PULLUP) ;
@@ -68,40 +69,49 @@ void setup() {
 
 void loop() {
   // Fill along the length of the strip in various colors...
-  colorWipe1(strip1.Color(   0,   120, 255), 50); // Blue
-  colorWipe2(strip2.Color(  200,   255, 0), 50); // yellow
-  colorWipe3(strip3.Color(  255,   60, 0), 50); // green
-  colorWipe4(strip4.Color( 60,   0, 255), 50); // purple
+  colorWipe1(strip1.Color(  255,   255, 255), 50); // Blue
+  colorWipe2(strip2.Color(  255,   255, 255), 50); // yellow
+  colorWipe3(strip3.Color(  255,   255, 255), 50); // green
+  colorWipe4(strip4.Color(  255,   255, 255), 50); // purple
 
 button1State=digitalRead(button1);
-if (digitalRead(button1)==HIGH) {
-    delay (100) ;
-    Serial.println("1");
-    digitalWrite(LED1_PIN,HIGH);
-  }
-  else{
-     digitalWrite(LED1_PIN,LOW);
-    }
 
+if (digitalRead(button1)==HIGH) {
+    Serial.println("1");
+    colorWipe1(strip1.Color(   250,   255, 0), 50); // Yellow
+    delay(1000);
+  }
+
+
+button2State=digitalRead(button2);
 
 if (digitalRead(button2)==HIGH){
     Serial.println("2");
+    colorWipe2(strip2.Color(  80,   0, 255), 50); // Purple
+    delay(1000);
   }
 
+
+button3State=digitalRead(button3);
 
 if (digitalRead(button3)==HIGH) {
-    delay (100) ;
     Serial.println("3");
+    colorWipe3(strip3.Color(  124,  255, 0), 50); // green
+    delay(1000);
   }
 
+
+button4State=digitalRead(button4);
 
 if (digitalRead(button4)==HIGH) {
-    delay (100) ;
     Serial.println("4");
+    colorWipe4(strip4.Color( 0,  0, 255), 50); // Blue
+    delay(1000);
   }
+  
+button5State=digitalRead(button5);
 
 if (digitalRead(button5)==HIGH) {
-    delay (100) ;
     Serial.println("5");
   }
 
