@@ -1,0 +1,150 @@
+#include <Adafruit_NeoPixel.h>
+#ifdef __AVR__
+ #include <avr/power.h> // Required for 16 MHz Adafruit Trinket
+#endif
+
+
+#define LED1_PIN    8
+#define LED2_PIN    9
+#define LED3_PIN    10
+#define LED4_PIN    11
+
+#define LED1_COUNT 60
+#define LED2_COUNT 60
+#define LED3_COUNT 60
+#define LED4_COUNT 60
+
+int button1 = 3;
+int button2 = 4;
+int button3 = 5;
+int button4 = 6;
+int button5 = 7;
+
+int button1State = 0;
+int button2State = 0;
+int button3State = 0;
+int button4State = 0;
+
+Adafruit_NeoPixel strip1(LED1_COUNT, LED1_PIN, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel strip2(LED2_COUNT, LED2_PIN, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel strip3(LED3_COUNT, LED3_PIN, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel strip4(LED4_COUNT, LED4_PIN, NEO_GRB + NEO_KHZ800);
+
+// setup() function -- runs once at startup --------------------------------
+
+void setup() {
+
+#if defined(__AVR_ATtiny85__) && (F_CPU == 16000000)
+  clock_prescale_set(clock_div_1);
+#endif
+  // END of Trinket-specific code.
+
+  strip1.begin();           // INITIALIZE NeoPixel strip object (REQUIRED)
+  strip1.show();            // Turn OFF all pixels ASAP
+  strip1.setBrightness(50); // Set BRIGHTNESS to about 1/5 (max = 255)
+
+  strip2.begin();           // INITIALIZE NeoPixel strip object (REQUIRED)
+  strip2.show();            // Turn OFF all pixels ASAP
+  strip2.setBrightness(50); // Set BRIGHTNESS to about 1/5 (max = 255)
+
+  strip3.begin();           // INITIALIZE NeoPixel strip object (REQUIRED)
+  strip3.show();            // Turn OFF all pixels ASAP
+  strip3.setBrightness(50); // Set BRIGHTNESS to about 1/5 (max = 255)
+
+  strip4.begin();           // INITIALIZE NeoPixel strip object (REQUIRED)
+  strip4.show();            // Turn OFF all pixels ASAP
+  strip4.setBrightness(50); // Set BRIGHTNESS to about 1/5 (max = 255)
+
+  pinMode(button1,INPUT_PULLUP) ;
+  pinMode(button2,INPUT_PULLUP) ;
+  pinMode(button3,INPUT_PULLUP) ;
+  pinMode(button4,INPUT_PULLUP) ;
+  pinMode(button5,INPUT_PULLUP) ;
+  Serial.begin(9600) ;
+}
+
+
+// loop() function -- runs repeatedly as long as board is on ---------------
+
+void loop() {
+  // Fill along the length of the strip in various colors...
+  colorWipe1(strip1.Color(   0,   120, 255), 50); // Blue
+  colorWipe2(strip2.Color(  200,   255, 0), 50); // yellow
+  colorWipe3(strip3.Color(  255,   60, 0), 50); // green
+  colorWipe4(strip4.Color( 60,   0, 255), 50); // purple
+
+button1State=digitalRead(button1);
+if (digitalRead(button1)==HIGH) {
+    delay (100) ;
+    Serial.println("1");
+    digitalWrite(LED1_PIN,HIGH);
+  }
+  else{
+     digitalWrite(LED1_PIN,LOW);
+    }
+
+
+if (digitalRead(button2)==HIGH){
+    Serial.println("2");
+  }
+
+
+if (digitalRead(button3)==HIGH) {
+    delay (100) ;
+    Serial.println("3");
+  }
+
+
+if (digitalRead(button4)==HIGH) {
+    delay (100) ;
+    Serial.println("4");
+  }
+
+if (digitalRead(button5)==HIGH) {
+    delay (100) ;
+    Serial.println("5");
+  }
+
+}
+
+
+// Some functions of our own for creating animated effects -----------------
+
+// Fill strip pixels one after another with a color. Strip is NOT cleared
+// first; anything there will be covered pixel by pixel. Pass in color
+// (as a single 'packed' 32-bit value, which you can get by calling
+// strip.Color(red, green, blue) as shown in the loop() function above),
+// and a delay time (in milliseconds) between pixels.
+void colorWipe1(uint32_t color, int wait) {
+  for(int i=0; i<strip1.numPixels(); i++) { // For each pixel in strip...
+    strip1.setPixelColor(i, color);         //  Set pixel's color (in RAM)
+    strip1.show();                          //  Update strip to match
+                        //  Pause for a moment
+  }
+}
+
+void colorWipe2(uint32_t color, int wait) {
+  for(int i=0; i<strip1.numPixels(); i++) { // For each pixel in strip...
+    strip2.setPixelColor(i, color);         //  Set pixel's color (in RAM)
+    strip2.show();                          //  Update strip to match
+                          //  Pause for a moment
+  }
+}
+
+
+void colorWipe3(uint32_t color, int wait) {
+  for(int i=0; i<strip1.numPixels(); i++) { // For each pixel in strip...
+    strip3.setPixelColor(i, color);         //  Set pixel's color (in RAM)
+    strip3.show();                          //  Update strip to match
+                           //  Pause for a moment
+  }
+}
+
+
+void colorWipe4(uint32_t color, int wait) {
+  for(int i=0; i<strip1.numPixels(); i++) { // For each pixel in strip...
+    strip4.setPixelColor(i, color);         //  Set pixel's color (in RAM)
+    strip4.show();                          //  Update strip to match
+                           //  Pause for a moment
+  }
+}
